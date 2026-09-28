@@ -1,0 +1,59 @@
+﻿<section class="product-section">
+
+    <div class="product-info">
+
+        <div class="product-brand">
+            MEMO <span>Store</span>
+        </div>
+
+        <h1>
+            @Title
+        </h1>
+
+        <div class="product-price">
+            @Price грн
+        </div>
+
+        <div class="product-buttons">
+
+            <a href="@OrderLink" class="buy-button">
+                ЗАМОВИТИ ЗАРАЗ
+            </a>
+
+            <a href="@CharacteristicsLink" class="characteristics-button">
+                ХАРАКТЕРИСТИКИ
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="product-image">
+
+        <img src="@Image"
+             alt="@Title" />
+
+    </div>
+
+</section>
+
+
+@code {
+
+    [Parameter]
+    public string Image { get; set; } = "";
+
+    [Parameter]
+    public string Title { get; set; } = "";
+
+    [Parameter]
+    public string Price { get; set; } = "";
+
+    [Parameter]
+    public string OrderLink { get; set; } = "";
+
+    [Parameter]
+    public string CharacteristicsLink { get; set; } = "";
+
+}

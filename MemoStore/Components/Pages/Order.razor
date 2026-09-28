@@ -1,0 +1,396 @@
+﻿@rendermode InteractiveServer
+
+@inject TelegramService telegram
+@inject NavigationManager Navigation
+
+@page "/order"
+@page "/order/cx20"
+@page "/order/cx14"
+
+<PageTitle>Замовлення — MEMO Store</PageTitle>
+
+
+<div class="order-page">
+
+    <div class="order-card">
+
+        <a href="/" class="back-btn">
+            ← НАЗАД
+        </a>
+
+        <div class="logo">
+            MEMO <span>Store</span>
+        </div>
+
+        <h1>Замовлення</h1>
+
+
+        <div class="product-name">
+            @ProductName
+        </div>
+
+        <div class="product-price">
+            @Price грн
+        </div>
+
+        @if (WholesalePrice > 0)
+        {
+            <div class="wholesale">
+                Від 3 шт — <b>@WholesalePrice грн/шт</b>
+            </div>
+        }
+        else
+        {
+            <div class="wholesale">
+                &nbsp;
+            </div>
+        }
+
+
+        <div class="form">
+
+            <label>Ваше ім'я</label>
+
+            <input type="text"
+                   @bind="Name"
+                   placeholder="Введіть ім'я" />
+
+
+            <label>Номер телефону</label>
+
+            <input type="tel"
+                   @bind="Phone"
+                   placeholder="+380..." />
+
+
+            <label>Місто</label>
+
+            <input type="text"
+                   @bind="City"
+                   placeholder="Ваше місто" />
+
+
+            <label>Поштовий індекс</label>
+
+            <input type="text"
+                   @bind="PostalCode"
+                   placeholder="Введіть поштовий індекс" />
+
+
+            <label>Нова Пошта / Укрпошта</label>
+
+            <input type="text"
+                   @bind="PostOffice"
+                   placeholder="Номер або адреса відділення" />
+
+
+            <label>Кількість</label>
+
+            <input type="number"
+                   @bind="Count"
+                   min="1" />
+
+
+            <button type="button"
+                    class="order-button"
+                    @onclick="Book"
+                    disabled="@IsSending">
+
+                @(IsSending ? "ВІДПРАВЛЕННЯ..." : "ЗАМОВИТИ")
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@code {
+
+    private string Name { get; set; } = "";
+
+    private string Phone { get; set; } = "";
+
+    private string City { get; set; } = "";
+
+    private string PostalCode { get; set; } = "";
+
+    private string PostOffice { get; set; } = "";
+
+    private int Count { get; set; } = 1;
+
+    private bool IsSending { get; set; } = false;
+
+
+    // ЯКИЙ ТОВАР ВІДКРИТО
+
+    private bool IsCX20 =>
+        Navigation.Uri.Contains("/order/cx20");
+
+    private bool IsCX14 =>
+        Navigation.Uri.Contains("/order/cx14");
+
+
+    // НАЗВА
+
+    private string ProductName =>
+        IsCX20 ? "MEMO CX20" :
+        IsCX14 ? "MEMO CX14" :
+        "MEMO CX08 Pro Max";
+
+
+    // ЦІНА
+
+    private int Price =>
+        IsCX20 ? 625 :
+        IsCX14 ? 850 :
+        800;
+
+
+    // ОПТОВА ЦІНА
+
+    private int WholesalePrice =>
+        IsCX20 ? 545 :
+        IsCX14 ? 0 :
+        725;
+
+
+    // ЗАМОВЛЕННЯ
+
+    private async Task Book()
+    {
+        if (IsSending)
+            return;
+
+        if (Count < 1)
+            return;
+
+
+        IsSending = true;
+
+
+        try
+        {
+            await telegram.SendToAdmin(
+
+                "НОВЕ ЗАМОВЛЕННЯ\n" +
+                "Товар: " + ProductName + "\n" +
+                "Ім'я: " + Name + "\n" +
+                "Телефон: " + Phone + "\n" +
+                "Місто: " + City + "\n" +
+                "Поштовий індекс: " + PostalCode + "\n" +
+                "Відділення: " + PostOffice + "\n" +
+                "Кількість: " + Count
+            );
+
+
+            // ВІДНІМАЄМО ПОТРІБНИЙ ТОВАР
+
+            if (IsCX20)
+            {
+                Products.CX20 = Products.CX20 - Count;
+            }
+            else if (IsCX14)
+            {
+                Products.CX14 = Products.CX14 - Count;
+            }
+            else
+            {
+                Products.CX08 = Products.CX08 - Count;
+            }
+
+
+            Navigation.NavigateTo("/");
+        }
+        finally
+        {
+            IsSending = false;
+        }
+    }
+
+}
+
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+
+    .order-page {
+        min-height: 100vh;
+        padding: 50px 20px;
+        display: flex;
+        justify-content: center;
+        background: radial-gradient( circle at 50% 0, #35115f 0, #11101a 35%, #07070b 70% );
+        color: white;
+    }
+
+
+    .order-card {
+        width: min(600px, 100%);
+        margin: auto;
+        padding: 35px;
+        background: #101017;
+        border: 1px solid #30263d;
+        border-radius: 22px;
+        box-shadow: 0 0 60px #8b3dd933;
+    }
+
+
+    .back-btn {
+        display: inline-block;
+        margin-bottom: 30px;
+        padding: 10px 16px;
+        color: #aaa;
+        text-decoration: none;
+        border: 1px solid #333;
+        border-radius: 10px;
+    }
+
+
+        .back-btn:hover {
+            color: white;
+            border-color: #a855f7;
+        }
+
+
+    .logo {
+        font-size: 27px;
+        font-weight: 900;
+        margin-bottom: 35px;
+    }
+
+
+        .logo span {
+            color: #a855f7;
+        }
+
+
+    h1 {
+        margin: 0;
+        font-size: 46px;
+        font-weight: 900;
+    }
+
+
+    .product-name {
+        margin-top: 15px;
+        color: #b9a0ff;
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+
+    .product-price {
+        margin-top: 25px;
+        font-size: 42px;
+        font-weight: 900;
+    }
+
+
+    .wholesale {
+        margin-top: 8px;
+        margin-bottom: 35px;
+        color: #999;
+        font-size: 17px;
+    }
+
+
+        .wholesale b {
+            color: white;
+        }
+
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+
+    label {
+        margin-top: 8px;
+        color: #aaa;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+
+    input {
+        width: 100%;
+        height: 52px;
+        padding: 0 16px;
+        border: 1px solid #30263d;
+        border-radius: 10px;
+        outline: none;
+        background: #08080d;
+        color: white;
+        font-size: 16px;
+    }
+
+
+        input:focus {
+            border-color: #a855f7;
+        }
+
+
+        input::placeholder {
+            color: #666;
+        }
+
+
+    .order-button {
+        width: 100%;
+        height: 58px;
+        margin-top: 20px;
+        border: none;
+        border-radius: 12px;
+        background: #a855f7;
+        color: white;
+        font-size: 17px;
+        font-weight: 900;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+
+        .order-button:hover:not(:disabled) {
+            background: #9333ea;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px #8b3dd955;
+        }
+
+
+        .order-button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+
+    @@media (max-width: 600px) {
+
+        .order-page {
+            padding: 25px 15px;
+        }
+
+
+        .order-card {
+            padding: 25px 20px;
+        }
+
+
+        h1 {
+            font-size: 38px;
+        }
+
+
+        .product-price {
+            font-size: 36px;
+        }
+    }
+
+</style>

@@ -1,0 +1,313 @@
+﻿@page "/characteristics"
+@page "/characteristics/{Product}"
+
+<PageTitle>Характеристики — MEMO Store</PageTitle>
+
+<div class="characteristics-page">
+
+    <div class="characteristics-card">
+
+        <a href="/" class="back-btn">
+            ← НАЗАД
+        </a>
+
+        <div class="logo">
+            MEMO <span>Store</span>
+        </div>
+
+
+        @if (Product == "cx20")
+        {
+            <!-- CX20 -->
+
+            <h1>Характеристики</h1>
+
+            <p class="product-title">
+                MEMO CX20
+            </p>
+
+            <div class="spec-list">
+
+                <div class="spec">
+                    <span>Модель</span>
+                    <b>MEMO CX20</b>
+                </div>
+
+                <div class="spec">
+                    <span>Потужність</span>
+                    <b>30W</b>
+                </div>
+
+                <div class="spec">
+                    <span>Підсвітка</span>
+                    <b>RGB</b>
+                </div>
+
+                <div class="spec">
+                    <span>Призначення</span>
+                    <b>Охолодження смартфона</b>
+                </div>
+
+                <div class="spec">
+                    <span>Кріплення</span>
+                    <b>Кліпса</b>
+                </div>
+
+                <div class="spec">
+                    <span>Підключення</span>
+                    <b>USB Type-C</b>
+                </div>
+
+                <div class="spec">
+                    <span>Живлення</span>
+                    <b>USB</b>
+                </div>
+
+                <div class="spec">
+                    <span>Ціна</span>
+                    <b>625 грн</b>
+                </div>
+
+            </div>
+        }
+
+        else if (Product == "cx14")
+        {
+            <!-- CX14 -->
+
+            <h1>Характеристики</h1>
+
+            <p class="product-title">
+                MEMO CX14
+            </p>
+
+            <div class="spec-list">
+
+                <div class="spec">
+                    <span>Модель</span>
+                    <b>MEMO CX14</b>
+                </div>
+
+                <div class="spec">
+                    <span>Потужність</span>
+                    <b>25W</b>
+                </div>
+
+                <div class="spec">
+                    <span>Підсвітка</span>
+                    <b>RGB</b>
+                </div>
+
+                <div class="spec">
+                    <span>Призначення</span>
+                    <b>Охолодження смартфона</b>
+                </div>
+
+                <div class="spec">
+                    <span>Кріплення</span>
+                    <b>Кліпса</b>
+                </div>
+
+                <div class="spec">
+                    <span>Підключення</span>
+                    <b>USB Type-C</b>
+                </div>
+
+                <div class="spec">
+                    <span>Живлення</span>
+                    <b>USB</b>
+                </div>
+
+                <div class="spec">
+                    <span>Акумулятор</span>
+                    <b>2000 мА·год</b>
+                </div>
+
+                <div class="spec">
+                    <span>Ціна</span>
+                    <b>850 грн</b>
+                </div>
+
+            </div>
+        }
+
+        else
+        {
+            <!-- CX08 PRO MAX -->
+
+            <h1>Характеристики</h1>
+
+            <p class="product-title">
+                MEMO CX08 Pro Max
+            </p>
+
+            <div class="spec-list">
+
+                <div class="spec">
+                    <span>Модель</span>
+                    <b>MEMO CX08 Pro Max</b>
+                </div>
+
+                <div class="spec">
+                    <span>Потужність</span>
+                    <b>23W</b>
+                </div>
+
+                <div class="spec">
+                    <span>Підсвітка</span>
+                    <b>RGB</b>
+                </div>
+
+                <div class="spec">
+                    <span>Призначення</span>
+                    <b>Охолодження смартфона</b>
+                </div>
+
+                <div class="spec">
+                    <span>Кріплення</span>
+                    <b>Кліпса</b>
+                </div>
+
+                <div class="spec">
+                    <span>Підключення</span>
+                    <b>USB Type-C</b>
+                </div>
+
+                <div class="spec">
+                    <span>Живлення</span>
+                    <b>USB</b>
+                </div>
+
+                <div class="spec">
+                    <span>Ціна</span>
+                    <b>800 грн</b>
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+@code {
+
+    [Parameter]
+    public string? Product { get; set; }
+
+}
+
+
+<style>
+
+    .characteristics-page {
+        min-height: 100vh;
+        padding: 50px 7%;
+        background: radial-gradient( circle at 50% 0, #35115f 0, #11101a 35%, #07070b 70% );
+        color: white;
+    }
+
+
+    .characteristics-card {
+        width: min(850px, 100%);
+        margin: auto;
+    }
+
+
+    .back-btn {
+        display: inline-block;
+        margin-bottom: 30px;
+        padding: 10px 16px;
+        color: #aaa;
+        text-decoration: none;
+        border: 1px solid #333;
+        border-radius: 10px;
+        transition: 0.2s;
+    }
+
+
+        .back-btn:hover {
+            color: white;
+            border-color: #a855f7;
+        }
+
+
+    .logo {
+        font-size: 26px;
+        font-weight: 900;
+        margin-bottom: 20px;
+    }
+
+
+        .logo span {
+            color: #a855f7;
+        }
+
+
+    h1 {
+        font-size: 48px;
+        margin: 0;
+    }
+
+
+    .product-title {
+        color: #b9a0ff;
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+
+
+    .spec-list {
+        background: #101017;
+        border: 1px solid #292934;
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+
+    .spec {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 18px 20px;
+        border-bottom: 1px solid #292934;
+    }
+
+
+        .spec:last-child {
+            border-bottom: none;
+        }
+
+
+        .spec span {
+            color: #999;
+        }
+
+
+        .spec b {
+            text-align: right;
+        }
+
+
+    @@media (max-width: 600px) {
+
+        .characteristics-page {
+            padding: 30px 20px;
+        }
+
+        h1 {
+            font-size: 38px;
+        }
+
+        .spec {
+            flex-direction: column;
+            gap: 5px;
+        }
+
+            .spec b {
+                text-align: left;
+            }
+    }
+
+</style>
